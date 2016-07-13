@@ -1,0 +1,165 @@
+/*layout*/
+@font-face
+{
+    font-family: 'fzjl';
+    src:url(../fonts/禹卫硬笔常规体.ttf);
+}
+
+body{background: #eee}
+h1,h2,h3,h4,h5,p,span,input,a{font-family: "微软雅黑","weiruanyahei"}
+a{padding: 0 !important;}
+.poscenter{margin:0 auto;}
+.textcenter{text-align: center;}
+.left{float: left;}
+.right{float: right;}
+.commonpane{background: white;border: 1px solid #ddd;}
+.title-size{font-size: 1.5em;}
+
+.navbar-header a{color: #333;text-decoration: none;}
+.navbar{background: white;}
+.logo{height: 70px;}
+.logotitle{font-size: 1.5em;line-height: 70px;}
+.right-title{font-size: 1.2em;line-height: 70px;padding-left: 10px;padding-right: 10px;cursor: pointer;opacity: 0.9;}
+.right-title:hover{opacity: 1;}
+.right-icon{padding-right: 5px;}
+.navbar-nav .active > a{color: rgb(5,131,242) !important;background-color: white !important;border-bottom: solid 1px  rgb(5,131,242);padding-bottom: 3px !important;}
+
+.mainframe{margin-top: 80px;}
+
+/*拟态界面mymodal*/
+.mymodal{width: 100%;background:rgba(0,0,0,0.2);height: 90%;z-index: 999;display: none;position: absolute;left: 0;top: 80px;overflow: hidden;}
+.mymodal-main{width: 50%;height: 100%;overflow: hidden;background: white;float: right;transform: translateX(100%);position: relative;transition: 0.3s}
+.mymodal-main-show{transform: translateX(0);transition: 0.3s;}
+
+.mymodal-title{height: 10%;border-bottom:2px solid #eee;line-height: 74px;font-size: 1.5em;padding-left: 1em;position: absolute;left: 0;top: 0;width:100%;font-family: "微软雅黑"}
+.mymodal-body{margin-top: 12%;overflow:auto;height: 80%;}
+.mymodal-footer{border-top: 2px solid #eee;position: absolute;width: 100%;}
+.mymodal-footer button{height: 2em;width: 7em;position: absolute;line-height: 18px;right: 3em;top: 1em;}
+/*mymodal-open的时候对body进行的设置*/
+.mymodal-open{overflow: hidden;height: 100%;}
+
+/*userinfo 用户信息*/
+.mymodal-body .userinfo > div,.teacherinfo > div {border-left: 5px solid #00FF33;text-indent: 2em;font-size: 1.3em;background: #fbfbfb;line-height: 2em;margin-bottom: 10px;font-family: "微软雅黑"}
+
+
+
+/*login界面*/
+.login-box{width: 30%;margin: 0 auto;min-height: 300px;background: white;margin-top: 100px;border: 1px solid #ddd;}
+.login-title{text-align: center;font-size: 1.5em;margin: 22px;}
+.input-group{width: 100%;}
+.input-group-item{width: 300px;margin:0 auto;text-align: center;margin-bottom: 20px;}
+
+/*这里要加一个字体*/
+.input-icon,.input-item{border: 1px solid #cccccc;height: 44px;font-family: "lucida grande", "lucida sans unicode", lucida, helvetica, "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;}
+.input-icon{width: 15%;display: block;float: left;text-align: center;line-height: 44px;border-right:  0px;}
+.input-item{width: 85%;padding:10px;outline: none;}
+.input-item:focus{border: solid 1px  rgb(5,131,242);}
+.input-botton{margin-bottom: 15px;}
+
+/*.login-botton{width: 100%;height:50px;background:rgb(5,131,242);font-size: 1.5em;line-height: 50px;color: white;cursor: pointer;}*/
+.savecheckbox{width: 300px;padding-top: 20px;}
+.savecheckbox span{cursor: pointer;}
+.savepassword{border:none;font-size: 1.3em;}
+.login-help{color: grey;cursor: pointer;}
+
+/*index界面*/
+
+.course{;margin-left: 15px;padding: 0 !important;transition: 0.3s;}
+.course{min-height: 400px;}
+.course-title{height: 60px;line-height: 60px;font-size: 1.3em;border-bottom: 2px #eee solid;text-indent: 1em;margin-bottom: 1em;}
+/*.course-list {overflow: auto;}*/
+.course-list .active{background: rgba(136,201,242,0.3);border-top: 1px solid rgb(4,118,217);border-bottom: 1px solid rgb(4,118,217);color:rgb(4,118,217); }
+
+.course-list-item{text-indent: 2em;cursor: pointer;margin-bottom: 20px;}
+.course-list-item:hover{color:rgb(4,118,217);}
+.course-list-item-name {font-family: 'fzjl';font-size:1.9em;margin: 0;width: 100%;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;}
+.course-list-item .teachericon{margin-left: -20px;}
+
+/*userpane*/
+.userpane{margin-top: 5%;}
+.userpane-item img{height: 6em;width:6em;}
+.userpane-item a{color: black;}
+
+/*course 课程信息*/
+.news{margin-top: 30px;}
+.news-item{border-left: solid 3px #5cb85c;font-size: 1.2em;text-indent: 1em;margin-left: 1em;margin-bottom: 6px;}
+.news-item p {margin: 0}
+
+/*homework*/
+.homework{margin-top: 30px;}
+.homework-item{padding-left: 2em;border-bottom: 1px dashed #ddd;margin-top: 1em;}
+.homework-title{margin-bottom: 0.5em;cursor: pointer;}
+.homework-title:hover{color:rgb(5,131,242);}
+.homework-info{margin-bottom: 1em;}
+.homework-breif{padding-bottom: 2em;}
+
+.homeworkop span{cursor: pointer;}
+.homeworkop span:hover{
+  opacity: 0.7;
+}
+
+/*资源列表*/
+
+.file-title{margin-bottom: 0 !important;}
+.file table tr {font-size: 1.2em;cursor: pointer;}
+.file-icon{margin-right: 10px;}
+
+.footer{font-family: 'fzjl';}
+
+.btn-1 {
+  background:#e02c26;
+  font-weight: 100;
+}
+
+.btn-1:hover {
+  background: #F26F6F;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+.btn-1 svg {
+  height: 45px;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+.btn-1 rect {
+  fill: none;
+  stroke: white;
+  stroke-width: 2;
+  stroke-dasharray: 422, 0;
+}
+
+.btn-1:hover rect {
+  stroke-width: 5;
+  stroke-dasharray: 15, 310;
+  stroke-dashoffset: 48;
+  -webkit-transition: all 1.35s cubic-bezier(0.19, 1, 0.22, 1);
+          transition: all 1.35s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.btn {
+  color: #fff;
+  cursor: pointer;
+  display: block;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 45px;
+  margin: 0 auto;
+  max-width: 300px;
+  position: relative;
+  text-decoration: none;
+  vertical-align: middle;
+  width: 100%;
+}
+
+.btn {
+  box-sizing: inherit;
+  -webkit-transition-property: all;
+          transition-property: all;
+  -webkit-transition-duration: .6s;
+          transition-duration: .6s;
+  -webkit-transition-timing-function: ease;
+          transition-timing-function: ease;
+}

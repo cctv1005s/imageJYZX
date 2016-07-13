@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    <title><%= webname %></title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/layout.css">
+    <link rel="stylesheet" type="text/css" href="css/animate.css">
+    <link rel="stylesheet" type="text/css" href="css/hover.css">
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="css/response.css">
+
+    <script type="text/javascript" src="js/jquery-2.2.0.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+
+    <!--sweetalert-->
+    <link rel="stylesheet" type="text/css" href="css/sweetalert.css">
+    <script type="text/javascript" src='js/sweetalert-dev.js'></script>
+    
+    <!-- react -->
+    <script src="http://static.runoob.com/assets/react/react-0.14.7/build/react.min.js"></script>
+    <script src="http://static.runoob.com/assets/react/react-0.14.7/build/react-dom.min.js"></script>
+    <script src="http://static.runoob.com/assets/react/browser.min.js"></script>
+
+    <!-- mymodal -->
+    <script type="text/javascript" src="js/mymodal.js"></script>
+</head>
+<body>
+<div class="mymodal" style="position:fixed;">
+    <div class="mymodal-main">
+        <div class="mymodal-title"><span>标题</span></div>
+        <div class="mymodal-body">
+        </div>
+        <div class="mymodal-footer">
+            <button class="modal-btn-close btn btn-success">关闭</button>
+        </div>
+    </div>
+</div>
+
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+         <button type="button" class="navbar-toggle response-btn" data-toggle="collapse" 
+         data-target="#navbar-collapse">
+         <span class="sr-only">切换导航</span>
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+         <span class="icon-bar"></span>
+         </button>
+         <a href="#">
+             <img class="logo" src="./img/logo.jpg">
+             <span class="logotitle">南开大学教育在线</span>
+         </a>
+
+        </div>
+        <div class="navbar-collapse collapse" id="navbar-collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li class="active"><a href="/"><span class="right-title"><span class="right-icon glyphicon glyphicon-home"></span>首页</span></a></li>
+                <li><a href="/bookmark"><span class="right-title"><span class="right-icon glyphicon glyphicon-edit"></span>留言</span></a></li>
+                <li><a href="/about"><span class="right-title"><span class="right-icon glyphicon glyphicon-star-empty"></span>关于</span></a></li>
+            </ul> 
+        </div>
+</nav>
+
+<div class="mainframe">
+    <%- body %>
+</div>
+
+<div class="btn-showcourse img-circle">
+    <span class="glyphicon glyphicon-plus"></span>
+</div>
+
+<script type="text/javascript">
+  ;
+  mymodal();
+  setInterval(function(){
+        $("[data-toggle='tooltip']").tooltip(); 
+  }, 1000);
+  
+  //控制active
+  var pathname = window.location.pathname;
+  switch(pathname){
+    case '/bookmark':
+    $('.navbar-nav .active').toggleClass('active');
+    $('.navbar-nav li').each(function(index,el){
+        if($(el).text()=='留言'){
+            $(el).toggleClass('active');
+        }
+    });
+    break;
+    case '/about':
+    $('.navbar-nav .active').toggleClass('active');
+    $('.navbar-nav li').each(function(index,el){
+        if($(el).text()=='关于'){
+            $(el).toggleClass('active');
+        }
+    });
+    break;
+    default:
+    break;
+  }
+
+</script>
+<script type="text/javascript">
+    $('.btn-showcourse').click(function(event) {
+        $('.course').toggleClass('course-hidden');
+    });
+</script>
+</body>
+</html>

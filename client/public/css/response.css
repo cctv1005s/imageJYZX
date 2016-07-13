@@ -1,0 +1,15 @@
+@media(max-width: 768px){
+    .course-hidden{transform: translateX(-120%);display: none;}
+
+    .mymodal-main{width: 100%;}
+    .mymodal-body{margin-top: 17%;height: 72%;}  
+    .response-btn{margin-top: 20px;background-color: rgb(137, 207, 240);}
+    .response-btn:hover{background-color: rgb(137, 207, 240) !important;}
+    .response-btn span{background-color: white !important;}
+    .btn-showcourse{height:50px;width:50px;background: rgba(0,0,0,0.5);position: fixed;right: 20px;bottom:20px;color: white;line-height: 50px;text-align: center;display: block !important;}
+
+    .login-box{width: 95%;margin-top: 0;}
+    .input-group-item{width: 95% !important;}
+}
+
+.btn-showcourse{display: none;}
