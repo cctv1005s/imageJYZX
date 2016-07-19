@@ -48,6 +48,7 @@ exports.postLogin = function(req,res,next){
           else{     
             req.session.user = {
               username:result.username,
+              password:result.password,
               jar:result.jar,
               savecheck:req.body.savecheck
             };

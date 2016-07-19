@@ -37,6 +37,7 @@ exports.synLogin = function(option,callback){
             }
             return callback(null,{
                     username:option.username,
+                    password:option.password,
                     jar:jar
                     }
                     );

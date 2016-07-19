@@ -1,10 +1,24 @@
-var model = require('model'),
+var model = require('../model'),
     user = model.user;
-/*
-用来获取用户的个人信息的
+
+
+/**
+* 将login封装如exeUser中，
+* 输入值 option{username:,password:}
 */
-exports.exeUser = function(option,callback){
-    user.synLogin(option,function(err,result){
-        
-    });
+exports.login = function(option,callback){
+    return user.synLogin(option,callback);
+}
+
+
+/*
+* -用来获取用户的个人信息的,
+* -option{
+*  username:,
+*  password:,
+*  jar   
+* }
+*/
+exports.exeUserInfo = function(option,callback){
+    
 }
