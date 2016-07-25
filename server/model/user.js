@@ -77,6 +77,7 @@ exports.login = function(option,callback){
     在线总时长： 204小时40分
     登录次数：308
 */
+
 exports.synUser = function(jar,callback){
     var request = tools.getMyrequest(jar);
     request('http://222.30.60.9/meol/welcomepage/student/index.jsp',{encoding: "binary"},function(err,req,body){

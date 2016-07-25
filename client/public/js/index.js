@@ -526,11 +526,12 @@ var LoginBox = React.createClass({
         success:function(result){
           if(result.valid == true){
              //成功登陆
+             swal('成功登陆');
              self.props.childChange(true);
           }
           else{
             if(result.err == '数据库中找不到'){
-               alert('加载中');
+               swal('加载中');
                $.ajax({
                 url:'/exenewuser',
                 type:'Post',
@@ -540,14 +541,20 @@ var LoginBox = React.createClass({
                     savecheck:self.state.savecheck
                 },
                 success:function(result){
+                console.log(' iam result');
+                  console.log(result);
                   if(result.valid == true){
-                     alert('加载成功');
+                     swal('加载成功');
+                     self.props.childChange(true);
                   }
                   else{
-                     swal(err);
+                     swal(result.err);
                   }
                 }
-                });
+               });
+            }
+            else{
+                swal(result.err);
             }
           }
         }
@@ -670,7 +677,7 @@ var UserPane = React.createClass({
         //抓取个人信息
 
         $.get('/user',function(result){
-            
+             console.log('result',result);
              //这里还要讨论是否成功读取的可能
 
              var html = "<div class='userinfo'>";

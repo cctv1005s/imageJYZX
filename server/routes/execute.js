@@ -1,11 +1,9 @@
 var execute = require('../execute');
 
 exports.newUser = function(req,res,next){
-    var option = {
-      username:req.body.username,
-      password:req.body.password
-    };
-    excute.exeNewUser(option,function(err,result){
+    var option = req.session.user;
+    try{
+    execute.exeNewUser(option,function(err,result){
         if(err){
             res.json({
                 valid:false,
@@ -19,4 +17,8 @@ exports.newUser = function(req,res,next){
             });
         }
     });
+    }
+    catch(e){
+        console.log(e);
+    }
 }

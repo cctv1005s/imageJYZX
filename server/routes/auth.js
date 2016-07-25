@@ -21,17 +21,37 @@ exports.postLogin = function(req,res,next){
       user.login(option,function(err,result){
           if(err){
             if(err == '数据库中找不到'){
-            return res.json({valid:false,err:err});
+                try{
+                user.synLogin(option,function(err,result){
+                    if(err){
+                      console.log(err);
+                      return res.json({valid:false,err:err});
+                    }
+                    else{     
+                      req.session.user = {
+                        username:result.username,
+                        password:result.password,
+                        jar:result.jar,
+                        savecheck:req.body.savecheck
+                      };
+                     return res.json({valid:false,err:'数据库中找不到'});
+                    }
+                });
+                }
+                catch(e){
+                  console.log(e);
+                }
+            
             }
             if(err == '账号或密码不正确')
             return res.json({valid:false,err:err});
           }
           else{            
-            // req.session.user = {
-            //   username:result.username,
-            //   cookie:result.cookie,
-            //   savecheck:req.body.savecheck
-            // };
+            req.session.user = {
+              username:result.username,
+              cookie:result.cookie,
+              savecheck:req.body.savecheck
+            };
             //这里还得在讨论
             return res.json({valid:true});
           }      

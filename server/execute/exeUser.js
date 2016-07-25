@@ -1,14 +1,10 @@
 var model = require('../model'),
-    user = model.user;
+    user_model = model.user;
 
+var mysql = require('../mysql'),
+    user_mysql = mysql.user
 
-/**
-* 将login封装如exeUser中，
-* 输入值 option{username:,password:}
-*/
-exports.login = function(option,callback){
-    return user.synLogin(option,callback);
-}
+var _ =require('lodash');
 
 
 /*
@@ -16,9 +12,24 @@ exports.login = function(option,callback){
 * -option{
 *  username:,
 *  password:,
-*  jar   
+*  jar:
 * }
 */
 exports.exeUserInfo = function(option,callback){
-    
+    //爬到学生的信息并将其存到数据库中
+    user_model.synUser(option.jar,function(err,result){
+        if(err){
+            return callback(err);
+        }
+        result.username = option.username,
+        result.password = option.password;
+        
+        user_mysql.insertUser(result,function(err,result){
+            if(err){
+                return callback(err);
+            }
+            return callback(null,result);
+        });
+
+    })
 }

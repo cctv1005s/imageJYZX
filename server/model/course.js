@@ -11,7 +11,7 @@ var mysql = require('../mysql'),
     Course = mysql.course;//
 
 var fs = require('fs');
-
+var _ = require('lodash');
 
 /**
  * 根据cookie获取课程列表
@@ -65,7 +65,25 @@ exports.synCourseList = function(jar,callback){
                 courselist.push(courseitem);
             }
         });
-        return callback(null,courselist);
+
+        //消除重复，比较坑爹，用_.uniq来消除id不行
+        var list = [];
+        for(var i = 0;i < courselist.length ;i++ ){
+            if(list.length == 0){
+                list.push(courselist[i]);
+            }
+            var found = 0;
+            for(var j = 0;j < list.length ;j ++){
+                if(list[j].id == courselist[i].id){
+                    found = 1;
+                    break;
+                }
+            }
+            if(found == 0)
+                list.push(courselist[i]);
+        }
+        //消除重复结束
+        return callback(null,list);
     });
 }
 
@@ -202,9 +220,10 @@ exports.teacherInfo = function(courseId,callback){
         var body = tools.getGBK(body);
         try{
         var $ = tools.load(body),
-            courseSylla = {};
-            courseSylla.courseName = $('.title').text();
-            courseSylla.courseSylla = $('.text input').val()||"";
+            courseSylla = {
+                courseName:$('.title').text(),
+                courseSylla:$('.text input').val()||""
+            };
         }
         catch(e){
             callback(e);
@@ -345,6 +364,7 @@ exports.synOneTask = function(taskId,jar,callback){
     var answerUrl = util.format("http://222.30.60.9/meol/common/hw/student/taskanswer.jsp?hwtid=%s",taskId),
         taskUrl = util.format("http://222.30.60.9/meol/common/hw/student/hwtask.view.jsp?hwtid=%s",taskId),
         baseUrl = "http://222.30.60.9/";
+    
     var myep = new eventproxy();
     
     var request = tools.getMyrequest(jar);

@@ -27,6 +27,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../client/public')));
 app.use(partials());
+
 //session
 app.use(session({
     secret: 'JYZX-session',
