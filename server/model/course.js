@@ -271,7 +271,8 @@ exports.synCourseNews = function(courseId,jar,callback){
                  var newsItem = {};
                  newsItem.newsCont = $(el).text(),
                  newsItem.newsType = $(el).text().match('新的作业')?'作业':'通知',
-                 newsItem.contId = tools.getCourseId($(($(el).find('a'))[1]).attr('href'));
+                 newsItem.contId = tools.getCourseId($(($(el).find('a'))[1]).attr('href')),
+                 newsItem.courseId = courseId;
                  newsList.push(newsItem);
             })
             
@@ -444,10 +445,10 @@ exports.synCourseFolder = function(option,jar,callback){
            var query = qs.parse(url.parse(itemHref).query);
            }
            catch(e){
-            console.log(itemHref);
+            
             console.log(e);
            }
-           console.log(query);
+
            if(itemHref.match('folderid')){
             //如果是文件夹的话
                 var folderItem = {

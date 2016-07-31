@@ -4,7 +4,8 @@ var site = require('./routes/site'),
     auth = require('./routes/auth'),
     course = require('./routes/course'),
     user = require('./routes/user'),
-    execute = require('./routes/execute');
+    execute = require('./routes/execute'),
+    file = require('./routes/file');
 
 
 var middleware = require('./middleware'),
@@ -45,5 +46,9 @@ router.get('/about',site.about);
 
 //execute
 router.post('/exenewuser',execute.newUser);//在数据库中新建一个用户
+
+//文件下载,file
+router.get('/homework',accontrol.userRequire,file.homework);//将文件流转交给服务器
+router.get('/resource',accontrol.userRequire,file.resource);
 
 module.exports = router;

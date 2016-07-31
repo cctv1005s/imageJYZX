@@ -8,6 +8,7 @@ var webrouter = require('./webrouter');//路由处理
 var session = require('express-session');
 var config = require('./config')
 var passport = require('passport');
+var fs = require('fs');
 
 var partials = require('express-partials');
 var _ = require('lodash');
@@ -18,9 +19,11 @@ var app = express();
 app.set('views', path.join(__dirname, '../client/views'));
 app.set('view engine', 'ejs');
 
+var accessLogStream = fs.createWriteStream(__dirname + '/access.log', {flags: 'a'});//日志记录文件
+
 //中间件
 // uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(favicon(path.join(__dirname, '../client/public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -77,7 +80,7 @@ app.use(function(err, req, res, next) {
   });
 }); 
 
-var port = 8080;
+var port = 80;
 app.listen(port||3000);
 console.log('app lisent on '+port||3000);
 

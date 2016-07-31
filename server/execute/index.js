@@ -17,21 +17,10 @@ var exeUser = require('./exeUser'),
 exports.exeNewUser = function(option,callback){
     var ep = new eventproxy();
 
-    exeUser.exeUserInfo(option,ep.done('user'));//获取用户的个人信息
-
-    ep.emit('tips',null);
+    exeUser.exeUserInfo(option,function(){});//获取用户的个人信息
     
-    try{
-    exeCourse.exeCourse(option,ep.done('course'));    
-    }
-    catch(e){
-        console.log(e);
-    }
+    exeCourse.exeCourse(option,function(err,result){
+        err?callback(err):callback(null,null);
+    });    
     
-    //对应数据库的表
-    ep.all('user','tips','course',function(user,tips,course){
-        return callback(null,null);
-    });
-    
-    ep.fail(callback);
 }

@@ -64,9 +64,9 @@ exports.insertBaseInfo = function(option,callback){
     mysql.query(sql,function(err,result){
         if(result && result.length == 0){
             //将老师个人介绍存成html
-            saveAsFile(option.profile,ep.done('profile'));
-            saveAsFile(option.courseintro,ep.done('courseintro'));
-            saveAsFile(option.coursesylla,ep.done('coursesylla'));
+            saveAsFile(option.profile,'profile',ep.done('profile'));
+            saveAsFile(option.courseintro,'courseintro',ep.done('courseintro'));
+            saveAsFile(option.coursesylla,'coursesylla',ep.done('coursesylla'));
 
             ep.all('profile','courseintro','coursesylla',function(profile,courseintro,coursesylla){
                 var baseInfo = [option.id,option.coursename,option.college,option.teacher,option.image,option.email,option.url,profile,courseintro,coursesylla];
@@ -160,8 +160,13 @@ exports.newLink = function(username,courseId){
 } 
 
 
-var saveAsFile = function(data,callback){
-    var filename = path.join(__dirname+"/files/",new Date().getTime() + ".html");
+var saveAsFile = function(data,type,callback){
+    if(typeof type == 'function'){
+        callback = type;
+        type = "";
+    }
+
+    var filename = path.join(__dirname+"/files/",type + new Date().getTime() + ".html");
     fs.writeFile(filename,data,function(err,result){
         if(err){
             return callback(err);

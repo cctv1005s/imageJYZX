@@ -21,85 +21,43 @@ var _ = require('lodash');
 */
 
 exports.exeCourse = function(option,callback){
+    //就算错误了也没有办法避免，不如就不返回错误好了
     course_model.synCourseList(option.jar,function(err,result){
         if(err){
             return callback(err);
         }
-        else{
-            //遍历
-            var courseList = result;
-            
-            for(var i = 0;i < courseList.length;i++){
-                var ep = new eventproxy();
-                //抓取课程的基本信息
-                getBaseInfo(courseList[i],option.jar,function(err,result){
-                    if(err){
-                        console.log(err);
-                        return ;
-                    }
-                    course_mysql.insertBaseInfo(result,function(err,result){
-                        ep.emit('insertBaseInfo');                  
-                    });
-                });
 
-                //抓取课程的最新通知
-                //courseNews先搁置
-
-                //抓取课程的课程作业
-                course_model.synOneTask(courseList[i].id,option.jar,function(err,result){
-                    //存作业内容
-                    var rtask = result.task,
-                        ranswer = result.answer;
-
-                    var task = {
-                        taskid:rtask.taskid,
-                        courseid:rtask.courseid,
-                        title:rtask.title,
-                        publisher:rtask.publisher,
-                        deadline:rtask.deadline,
-                        method:rtask.method,
-                        content:rtask.content
-                    }
-                    course_mysql.insertTask(task,ep.done('task'));
-                    var answer = {
-                        taskid:rtask.taskid,
-                        username:option.username,
-                        answer:ranswer.answer,
-                        result:ranswer.result,
-                        comment:ranswer.comment,
-                        score:ranswer.score
-                    }
-                    //存答案内容
-                    course_mysql.insertAnswer(answer,ep.done('answer'));
-                });
-
-                //抓取课程的课程答案
-
-                //抓取课程的教学资源
-            }
-
-            ep.after('insertBaseInfo',courseList.length,function(data){
-                for(var i = 0;i < courseList.length;i++){
-                    course_mysql.newLink(option.username,courseList[i].id);
+        //遍历
+        var courseList = result;
+        var ep = new eventproxy();
+        
+        for(var i = 0;i < courseList.length;i++){
+            //抓取课程的基本信息
+            getBaseInfo(courseList[i],option.jar,function(err,result){
+                if(err){
+                    console.log(err);
+                    return ;
                 }
-                ep.emit('get_baseInfo',{});
+                course_mysql.insertBaseInfo(result,function(err,result){
+                    ep.emit('insertBaseInfo');                  
+                });
             });
 
-            ep.after('task',courseList.length,function(data){
-                ep.emit('get_task',{});
-            });
+            //抓取课程作业
+            getTask(courseList[i].id,option.jar);
+            //下载这门课的所有课程作业
 
-            ep.after('answer',courseList.length,function(data){
-                ep.emit('get_answer',{});
-            });
-
-            ep.all('get_baseInfo','get_task','get_answer',function(a,b,c){
-                callback(null,{});
-            });
         }
+
+        ep.after('insertBaseInfo',courseList.length,function(data){
+            for(var i = 0;i < courseList.length;i++){
+                course_mysql.newLink(option.username,courseList[i].id);
+            }
+            callback(null,{});
+        });
+
     });
 }
-
 
 //option这里是就是courseInfo
 var getBaseInfo = function(option,jar,callback){
@@ -123,6 +81,61 @@ var getBaseInfo = function(option,jar,callback){
 }
 
 exports.exeCourseNews = function(option,callback){
+}
 
+
+var getTask = function(courseid,jar){
+//抓取课程的最新通知
+//courseNews先搁置
+course_model.synCourseNews(courseid,jar,function(err,CourseNews){
+
+    for(var j = 0;j < CourseNews.length;j++){
+        if(CourseNews[j].newsType == '作业'){
+            // //抓取课程的课程作业
+            var courseId = CourseNews[j].courseId;
+            course_model.synOneTask(CourseNews[j].contId,jar,function(err,result){
+                //存作业内容
+                var rtask = result.task,
+                    ranswer = result.answer;
+
+                var task = {
+                    taskid:rtask.taskid,
+                    courseid:courseId,
+                    title:rtask.title,
+                    publisher:rtask.publisher,
+                    deadline:rtask.deadline,
+                    method:rtask.method,
+                    content:rtask.content
+                }
+
+                //在数据库中插入课程
+                course_mysql.insertTask(task,function(err,result){
+                    if(err){
+                        console.log(err);
+                    }
+                    else{
+
+                    //插入之后还要下载附件里面的文件并且修改内容
+
+                        var answer = {
+                            taskid:rtask.taskid,
+                            username:option.username,
+                            answer:ranswer.answer,
+                            result:ranswer.result,
+                            comment:ranswer.comment,
+                            score:ranswer.score
+                        }
+
+                        course_mysql.insertAnswer(answer,function(err,result){
+                            if(err){
+                                console.log(err);
+                            }
+                        });
+                    }
+                });
+            });
+        }
+    }
+});
 
 }

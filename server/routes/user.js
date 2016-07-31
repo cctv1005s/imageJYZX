@@ -1,6 +1,11 @@
 var model = require('../model'),
     user = model.user;
 
+var path = require('path');
+var request = require('request');
+var fs = require('fs');
+
+
 exports.getUserinfo = function(req,res,next){
     var jar = req.session.user.jar,
         savecheck = req.session.user.savecheck;
@@ -64,7 +69,16 @@ exports.getTips = function(req,res,next){
     }
 }
 
+
+
 exports.view = function(req,res,next){
-    res.render('course');
+    
+    res.writeHead(200, {
+      'Content-Type': 'application/force-download',
+      'Content-Disposition': 'attachment; filename=react.min.js'
+    });
+    
+    request("http://static.runoob.com/assets/react/react-0.14.7/build/react.min.js")
+    .pipe(res);
 }
 
