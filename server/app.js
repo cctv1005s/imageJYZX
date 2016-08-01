@@ -5,9 +5,11 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var webrouter = require('./webrouter');//路由处理
-var session = require('express-session');
 var config = require('./config')
 var passport = require('passport');
+var session = require('express-session');
+var RedisStore = require('connect-redis')(session);
+
 var fs = require('fs');
 
 var partials = require('express-partials');
@@ -31,12 +33,20 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, '../client/public')));
 app.use(partials());
 
+
 //session
 app.use(session({
     secret: 'JYZX-session',
     cookie: {
         maxAge: 7*24 * 60 * 60 * 60
     },
+    store:new RedisStore({
+      port: '6379',
+      host: '127.0.0.1',
+      db: 0,
+      pass:''
+    })
+    ,
     resave:false,
     saveUninitialized:false
 }));

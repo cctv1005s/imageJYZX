@@ -3,14 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-
+  
     <title><%= webname %></title>
+    <script type="text/javascript" src="/js/prefixfree.min.js"></script>
+    
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/layout.css">
     <link rel="stylesheet" type="text/css" href="css/animate.css">
     <link rel="stylesheet" type="text/css" href="css/hover.css">
     <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="css/response.css">
+
 
 </head>
 <body>
@@ -37,7 +40,7 @@
          </button>
          <a href="/">
              <img class="logo" src="./img/logo.jpg">
-             <span class="logotitle">南开大学教育在线</span>
+             <span class="logotitle">教育在线-镜像站</span>
          </a>
 
         </div>
@@ -59,7 +62,6 @@
 </div>
 
 
-
     <script type="text/javascript" src="js/jquery-2.2.0.min.js"></script>
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
 
@@ -74,7 +76,6 @@
 
     <!-- mymodal -->
     <script type="text/javascript" src="js/mymodal.js"></script>
-
 
 <script type="text/javascript">
   ;
@@ -108,9 +109,12 @@
 
 </script>
 <script type="text/javascript">
+
     $('.btn-showcourse').click(function(event) {
         $('.course').toggleClass('course-hidden');
+        $('.btn-showcourse').toggleClass('showcourse-rotate');
     });
+
 </script>
 
 </body>

@@ -18,6 +18,7 @@ router.get('/',site.index);
 /*登录*/
 router.get('/login',auth.login);
 router.post('/login',auth.postLogin);
+router.get('/logout',accontrol.userRequire,auth.logout);
 
 /*课程信息*/
 router.get('/course',accontrol.userRequire,course.getCourse);//获取课程列表
@@ -50,5 +51,6 @@ router.post('/exenewuser',execute.newUser);//在数据库中新建一个用户
 //文件下载,file
 router.get('/homework',accontrol.userRequire,file.homework);//将文件流转交给服务器
 router.get('/resource',accontrol.userRequire,file.resource);
+
 
 module.exports = router;

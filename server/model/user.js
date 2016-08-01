@@ -17,8 +17,16 @@ var indexurl = "http://222.30.60.9/meol/homepage/common/";
 @params option.password
 */
 
-exports.synLogin = function(option,callback){
+exports.synLogin = function(option,jjar,callback){
     var jar = request.jar();
+
+    if(typeof jjar == 'function'){
+        callback = jjar;
+    }
+    else{
+        jar = jjar;
+    }
+
     var myrequest = request.defaults({jar:jar});
     myrequest(indexurl,function(err,req,body){
         //读取logintoken

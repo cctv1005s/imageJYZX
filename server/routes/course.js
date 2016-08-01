@@ -4,11 +4,11 @@ var model = require('../model'),
 
 //获取课程列表
 exports.getCourse = function(req,res,next){
-    console.log(req.session);
-
+    
     var jar = req.session.user.jar,
         savecheck = req.session.user.savecheck,
-        username = req.session.user.username;
+        username = req.session.user.username,
+        password = req.session.user.password;
 
     if(savecheck == 'true'){
         course.courseList(username,function(err,result){
@@ -30,6 +30,22 @@ exports.getCourse = function(req,res,next){
         course.synCourseList(jar,function(err,result){
             if(err){
                 console.log(err);
+                if(err == "页面访问出错"){
+                    //在访问一遍
+                    user.synLogin({username:username,password:password},jar,function(err,result){
+                        if(err){
+                            return res.json({
+                                valid:false,
+                                error:err
+                                }); 
+                        }
+                        res.json({
+                        valid:true,
+                        courselist:result
+                        }
+                        );
+                    });
+                }
                 return res.json({
                         valid:false,
                         error:err

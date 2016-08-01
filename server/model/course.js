@@ -436,16 +436,16 @@ exports.synCourseFolder = function(option,jar,callback){
     
     var folderList = [];//保存这个folder下面的所有文件信息
     request(folderUrl,{encoding: "binary"},function(err,req,body){
+
         var $ = tools.load(tools.getGBK(body)),
-            itemLength = $('tr').length - 1;
+            itemLength = $('tr').length;
 
         for(var i = 1;i < itemLength+1;i++){
            try{
-           var itemHref = $($($('tr')[i]).find('td a')[0]).attr('href');
+           var itemHref = $($($('tr')[i]).find('td a')[0]).attr('href')||"";
            var query = qs.parse(url.parse(itemHref).query);
            }
            catch(e){
-            
             console.log(e);
            }
 
@@ -481,9 +481,6 @@ exports.synCourseFolder = function(option,jar,callback){
                 beforeId:option.courseId
                 }
                 folderList.push(fileItem);
-           }
-           else{
-                return callback("url分析错误");
            }
         }
         return callback(null,folderList);

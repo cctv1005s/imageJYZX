@@ -14,12 +14,13 @@
    };
    mymodal.__proto__ = {
     init:function(title,html){
-        $('.mymodal-title').text(title);
+        $('.mymodal-title span').text(title);
         $('.mymodal-body').html(html);
     }
     ,
-    open:function(){
+    open:function(callback){
         $('body').toggleClass('mymodal-open');
+        
         if($('.mymodal').css('display') == 'none'){
         $('.mymodal').fadeIn(400, function() {
             $('.mymodal .mymodal-main').toggleClass('mymodal-main-show');
@@ -27,7 +28,7 @@
         }
         else{
          $('.mymodal .mymodal-main').toggleClass('mymodal-main-show');
-         $('.mymodal').fadeOut(400, function() {});   
+         $('.mymodal').fadeOut(400, function() {});
         }
     }
     ,

@@ -1,10 +1,10 @@
 /*layout*/
-@font-face
+/*@font-face
 {
     font-family: 'fzjl';
     src:url(../fonts/禹卫硬笔常规体.ttf);
 }
-
+*/
 body{background: #eee}
 h1,h2,h3,h4,h5,p,span,input,a{font-family: "微软雅黑","weiruanyahei"}
 a{padding: 0 !important;}
@@ -28,11 +28,23 @@ a{padding: 0 !important;}
 
 /*拟态界面mymodal*/
 .mymodal{width: 100%;background:rgba(0,0,0,0.2);height: 90%;z-index: 999;display: none;position: absolute;left: 0;top: 80px;overflow: hidden;}
-.mymodal-main{width: 50%;height: 100%;overflow: hidden;background: white;float: right;transform: translateX(100%);position: relative;transition: 0.3s}
-.mymodal-main-show{transform: translateX(0);transition: 0.3s;}
+.mymodal-main{width: 50%;height: 100%;overflow: hidden;background: white;float: right;position: relative;transition: 0.3s;
+  -ms-transform: translateX(100%);
+  -moz-transform: translateX(100%);
+  -webkit-transform: translateX(100%);
+  -o-transform: translateX(100%);
+  transform: translateX(100%);
+  transform: translateX(100%);}
+.mymodal-main-show{
+    -ms-transform: translateX(0);
+    -moz-transform: translateX(0);
+    -webkit-transform: translateX(0);
+    -o-transform: translateX(0);
+    transform: translateX(0);transition: 0.3s;
+}
 
-.mymodal-title{height: 10%;border-bottom:2px solid #eee;line-height: 74px;font-size: 1.5em;padding-left: 1em;position: absolute;left: 0;top: 0;width:100%;font-family: "微软雅黑"}
-.mymodal-body{margin-top: 12%;overflow:auto;height: 80%;}
+.mymodal-title{height: 60px;border-bottom:2px solid #eee;line-height: 74px;font-size: 1.5em;padding-left: 1em;position: absolute;left: 0;top: 0;width:100%;font-family: "微软雅黑";white-space: nowrap;text-overflow: ellipsis;}
+.mymodal-body{margin-top: 60px;overflow:auto;height: 80%;}
 .mymodal-footer{border-top: 2px solid #eee;position: absolute;width: 100%;}
 .mymodal-footer button{height: 2em;width: 7em;position: absolute;line-height: 18px;right: 3em;top: 1em;}
 /*mymodal-open的时候对body进行的设置*/
@@ -72,8 +84,9 @@ a{padding: 0 !important;}
 
 .course-list-item{text-indent: 2em;cursor: pointer;margin-bottom: 20px;}
 .course-list-item:hover{color:rgb(4,118,217);}
-.course-list-item-name {font-family: 'fzjl';font-size:1.9em;margin: 0;width: 100%;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;}
+.course-list-item-name {font-family:'仿宋','fangsong';font-size:1.9em;margin: 0;width: 100%;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;}
 .course-list-item .teachericon{margin-left: -20px;}
+.courseList-teacherName{text-decoration: none !important;}
 
 /*userpane*/
 .userpane{margin-top: 5%;}
@@ -81,7 +94,7 @@ a{padding: 0 !important;}
 .userpane-item a{color: black;}
 
 /*course 课程信息*/
-.news{margin-top: 30px;}
+.news,f.ile{margin-top: 30px;}
 .news-item{border-left: solid 3px #5cb85c;font-size: 1.2em;text-indent: 1em;margin-left: 1em;margin-bottom: 6px;}
 .news-item p {margin: 0}
 
@@ -105,6 +118,18 @@ a{padding: 0 !important;}
 .file-icon{margin-right: 10px;}
 
 .footer{font-family: 'fzjl';}
+
+
+/*showcourse按钮的特效*/
+.btn-showcourse{transition: 0.3s;}
+.showcourse-rotate{
+transform:rotate(135deg);
+-ms-transform:rotate(135deg); /* Internet Explorer */
+-moz-transform:rotate(135deg); /* Firefox */
+-webkit-transform:rotate(135deg); /* Safari 和 Chrome */
+-o-transform:rotate(135deg); /* Opera */
+transition: 0.3s;
+}
 
 .btn-1 {
   background:#e02c26;

@@ -1,3 +1,25 @@
+var getHomeworkUrl = function(html){
+    $('.teacherinfo').find('a').each(function(index,el){
+        var href = $(el).attr('href');
+        var filename = $(el).text();
+        
+        href = '/homework?homeworkurl='+encodeURIComponent(href)
+               +'&filename='+encodeURIComponent(filename);
+        $(el).attr('href',href);
+        $(el).attr('target','_blank');
+    });
+}
+
+
+var getResourceUrl = function(html){
+    $('.file a').each(function(index,el){
+        var href = $(el).attr('href');
+        href = '/resource?resourceurl='+encodeURIComponent(href);
+        $(el).attr('href',href);
+        $(el).attr('target','_blank');
+    });
+}
+
 var Folder = React.createClass({
     getInitialState:function(){
         return {
@@ -7,9 +29,10 @@ var Folder = React.createClass({
     }
     ,
     componentWillReceiveProps:function(){
-        var courseId = this.props.courseId,
+        var courseId = $('.course-list .active').attr('data-id'),
             folderId = 0,
             self = this;
+        
         $.get("/coursefolder?courseid="+courseId+"&folderid="+folderId,function(result){
             if(result.valid == true){
                 self.setState({
@@ -56,11 +79,13 @@ var Folder = React.createClass({
         });
     }
     ,
+    componentDidUpdate:function(){
+        getResourceUrl();
+    }
+    ,
     render:function(){
         var view = [],
             fileList = this.state.fileList;
-            console.log('here is fileList');
-            console.log(fileList);
 
         for(var i = 0 ;i < fileList.length;i++){
             switch(fileList[i].fileType){
@@ -125,32 +150,22 @@ var Folder = React.createClass({
 var News = React.createClass({
     getInitialState:function(){
         return {
-            newsList:[]
+            newsList:[],
+            loading:true
         }
-    }
-    ,
-    componentDidMount:function(){
-        var self = this;
-        $.get('/coursenews?courseid='+this.props.courseId,function(result){
-            console.log(result);
-            if(result.valid == true){
-                self.setState({
-                    newsList:result.courseNews
-                });
-            }
-            else{
-                //加载失败的话
-            }  
-        }); 
     }
     ,
     componentWillReceiveProps:function(){
         var self = this;
-        $.get('/coursenews?courseid='+this.props.courseId,function(result){
+        var courseId = $('.course-list .active').attr('data-id');
+        this.setState({loading:true});
+
+        $.get('/coursenews?courseid='+courseId,function(result){
             console.log(result);
             if(result.valid == true){
                 self.setState({
-                    newsList:result.courseNews
+                    newsList:result.courseNews,
+                    loading:false
                 });
             }
             else{
@@ -162,6 +177,15 @@ var News = React.createClass({
     render:function(){    
     var view = [],
         newsList = this.state.newsList;
+
+    if(this.state.loading == true){
+        view =(<p><i className="fa fa-spinner fa-spin"></i>加载中，请稍候</p>);
+    }
+
+    if(newsList.length == 0){
+        view =(<p>无内容</p>);
+    }
+
     for(var i = 0 ;i < newsList.length;i++){
         view.push(
         <div className="news-item clearfix">
@@ -189,17 +213,25 @@ var News = React.createClass({
 var Task = React.createClass({
     getInitialState:function(){
         return {
-            taskList:[]
+            taskList:[],
+            loading:true
         }
     }
     ,
-    componentDidMount:function(){
+    componentWillReceiveProps:function(){
         var self = this;
-        $.get('/coursenews?courseid='+this.props.courseId,function(result){
+        var courseId = $('.course-list .active').attr('data-id');
+        self.setState({taskList:[]});
+        this.setState({loading:true});
+
+        $.get('/coursenews?courseid='+courseId,function(result){
             if(result.valid == true){
-                console.log(result);
                 var courseNews = result.courseNews;
+                if(courseNews.length == 0){
+                   self.setState({loading:false}); 
+                }
                 for(var i = 0;i < courseNews.length && courseNews[i].newsType=='作业';i++){
+                    self.setState({loading:false});
                     $.get('/onetask?taskid='+courseNews[i].contId,function(result){
                         if(result.taskInfo.task.content != 'Bug Report'){
                             var taskList = self.state.taskList;
@@ -213,35 +245,39 @@ var Task = React.createClass({
             }
             else{
                 //加载失败的话
-            }  
+            }
         }); 
     }
     ,
-    componentWillReceiveProps:function(){
+    componentDidMount:function(){
         var self = this;
-        self.setState({
-            taskList:[]
-        });
-        $.get('/coursenews?courseid='+this.props.courseId,function(result){
+        var courseId = $('.course-list .active').attr('data-id');
+        self.setState({taskList:[]});
+        this.setState({loading:true});
+
+        $.get('/coursenews?courseid='+courseId,function(result){
             if(result.valid == true){
                 var courseNews = result.courseNews;
+                if(courseNews.length == 0){
+                   self.setState({loading:false}); 
+                }
                 for(var i = 0;i < courseNews.length && courseNews[i].newsType=='作业';i++){
+                    self.setState({loading:false});
                     $.get('/onetask?taskid='+courseNews[i].contId,function(result){
-                        console.log(result);
                         if(result.taskInfo.task.content != 'Bug Report'){
                             var taskList = self.state.taskList;
                             taskList.push(result.taskInfo);
                             self.setState({
                                 taskList:taskList
-                            });
+                            })
                         }
                     });
                 }
             }
             else{
                 //加载失败的话
-            }  
-        });
+            }
+        }); 
     }
     ,
     onTitle:function(e){
@@ -263,6 +299,7 @@ var Task = React.createClass({
  
         mymodal.init(taskItem.task.title,html);
         mymodal.open();
+        getHomeworkUrl(html);
     }
     ,
     onAnswer:function(e){
@@ -310,6 +347,15 @@ var Task = React.createClass({
     render:function(){
     var taskList = this.state.taskList;
     var view = [];
+
+    if(taskList.length == 0){
+        view =(<p>无内容</p>);
+    }
+    
+    if(this.state.loading == true){
+       view =(<p><i className="fa fa-spinner fa-spin"></i>加载中，请稍候</p>); 
+    }
+
     for(var i = 0;i < taskList.length;i++){
         view.push(
 <div className="homework-item">
@@ -318,8 +364,7 @@ var Task = React.createClass({
     </div>
     
     <div className="homework-info clearfix">
-        <p className="left">吴英</p>
-        <p className="col-md-2" ><span className="glyphicon glyphicon-time"></span>{taskList[i].task.deadline}</p>
+        <p className="left" ><span className="glyphicon glyphicon-time"></span>{taskList[i].task.deadline}</p>
         <p className="col-md-2"><span>{taskList[i].task.method}</span></p>
         
         <p className="col-md-3 homeworkop">
@@ -350,7 +395,6 @@ var Task = React.createClass({
     }
 });
 
-
 var CoursePane = React.createClass({
     getInitialState:function(){       
         return {
@@ -358,6 +402,12 @@ var CoursePane = React.createClass({
             viewType:"news"
         }
     },
+    componentDidMount:function(){
+        this.setState({
+            courseId:this.props.courseId
+        });
+    }
+    ,
     onCourse:function(e){
         mymodal.init("课程介绍","加载中....");
         mymodal.open();
@@ -403,6 +453,7 @@ var CoursePane = React.createClass({
         //教学大纲
         mymodal.init("教学大纲","加载中....");
         mymodal.open();
+
         $.get('/coursesylla?courseid='+this.props.courseId,function(result){
            mymodal.init(result.courseSylla.courseName,result.courseSylla.courseSylla==0?'无内容':result.courseSylla.courseSylla);
         });
@@ -422,6 +473,7 @@ var CoursePane = React.createClass({
     }
     ,
     render:function(){
+    
     var style ={'margin-top':'10%'};
     var view ;
     switch(this.state.viewType){
@@ -437,7 +489,7 @@ var CoursePane = React.createClass({
     }
 
         return(
-<div className="right-body col-lg-9 col-xs-12">
+<div className="right-body col-lg-9 col-xs-12 col-sm-7">
     <div className="userpane row col-lg-12 textcenter">
         <div className="col-md-12">
             <div className="gap col-lg-2"></div>
@@ -472,15 +524,13 @@ var CoursePane = React.createClass({
             </div>
 
             <div className="userpane-item broadcast col-lg-2 col-xs-6">
-                    <img className="hvr-wobble-vertical" src="img/icon/source.gif" onClick={this.onFiles}></img>
-                    <p>教学资源</p>
+                <img className="hvr-wobble-vertical" src="img/icon/source.gif" onClick={this.onFiles}></img>
+                <p>教学资源</p>
             </div>
 
             <div className="userpane-item broadcast col-lg-2 col-xs-6">
-                <a href="#">
-                    <img className="hvr-wobble-vertical" src="img/icon/information.gif" onClick={this.onCourseNews}></img>
-                    <p>最新动态</p>
-                </a>
+                <img className="hvr-wobble-vertical" src="img/icon/information.gif" onClick={this.onCourseNews}></img>
+                <p>最新动态</p>
             </div>
         </div>
     </div>
@@ -496,7 +546,7 @@ var LoginBox = React.createClass({
         return {
             username:"",
             password:"",
-            savecheck:true,
+            savecheck:false,
         }
     },
     usernameChange: function(event) {
@@ -526,7 +576,7 @@ var LoginBox = React.createClass({
         success:function(result){
           if(result.valid == true){
              //成功登陆
-             swal('成功登陆');
+             //swal('成功登陆');
              self.props.childChange(true);
           }
           else{
@@ -591,9 +641,9 @@ var LoginBox = React.createClass({
             登录
         </a>
         <div className="savecheckbox poscenter">
-           <input type="checkbox" name="savepassword" id="savepassword " checked={this.state.savecheck} onClick={this.checkChange} >
-           <span>保存密码</span></input>
-           <span className="glyphicon glyphicon-question-sign login-help" data-toggle="tooltip" data-placement="bottom" title="保存密码我们会将您的密码保存在服务器上，下一次您登陆时的数据将从我们的服务器上读取，这是我们推荐的做法，如果不保存密码，那么您的浏览方式将和直接访问教育在线一样。" ></span>
+           <input type="checkbox" name="savepassword" id="savepassword " checked={this.state.savecheck} onClick={this.checkChange} disabled = "disabled">
+           <span disabled = "disabled">高阶版</span></input>
+           <span className="glyphicon glyphicon-question-sign login-help" data-toggle="tooltip" data-placement="bottom" title="复刻版的介绍在关于里面，还没写完，复刻版会更完善，敬请期待" ></span>
         </div>        
     </div>
 </div>;
@@ -644,13 +694,13 @@ var CourseList = React.createClass({
                 view.push (
                     <div className="course-list-item" data-id={courselist[i].id}>
                         <p className="course-list-item-name" data-id={courselist[i].id} onClick={this.onCourse} >{courselist[i].coursename}</p>
-                        <a href="#" data-id={courselist[i].id} ><p><span className="glyphicon glyphicon-user teachericon"></span>{courselist[i].teacher}</p></a>
+                        <a href="#" data-id={courselist[i].id} className="courseList-teacherName"><p><span className="glyphicon glyphicon-user teachericon"></span>{courselist[i].teacher}</p></a>
                     </div>);
             }
          }
      }
 
-     return <div className="left-frame col-lg-2 col-xs-11 col-sm-5 course commonpane course-hidden">
+     return <div className="left-frame col-lg-2 col-xs-11 col-sm-4 course commonpane course-hidden">
                 <div className="course-title">
                     <span>课程列表</span>
                 </div>
@@ -711,7 +761,7 @@ var UserPane = React.createClass({
     },
     onNote:function(){
         //通知公告
-        swal('虽然我觉得你看了系统公告也没啥用，但是这个得等我慢慢做——杨立');
+        swal('缓慢建设中');
     },
     componentDidMount:function(){
         var self = this;
@@ -726,7 +776,7 @@ var UserPane = React.createClass({
     }
     ,
     render:function(){
-        return <div className="userpane col-lg-9 col-xs-12 textcenter">
+        return <div className="userpane col-lg-9 col-xs-12 col-sm-7 textcenter">
                     <div className="gap col-lg-2"></div>
                     <div className="userpane-item userinfo col-lg-2 col-xs-6" onClick={this.onUserinfo}>
                         <a href="#">
@@ -746,6 +796,14 @@ var UserPane = React.createClass({
                     <a href="#">
                         <img className="hvr-wobble-vertical" src="img/icon/broadcast.gif"></img>
                         <p>系统公告</p>
+                    </a>
+                    </div>
+
+
+                    <div className="userpane-item broadcast col-lg-2 col-xs-6" >
+                    <a href="/logout">
+                        <img className="hvr-wobble-vertical" src="img/icon/logout.gif"></img>
+                        <p>退出登录</p>
                     </a>
                     </div>
                 </div>;
@@ -800,3 +858,4 @@ ReactDOM.render(
 <Index/>
 ,document.getElementById('mainBody')
 );
+

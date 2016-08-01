@@ -15,8 +15,8 @@ exports.postLogin = function(req,res,next){
       username:req.body.username,
       password:req.body.password
     };
-    var ep = new eventproxy();
-   //保存密码模式
+
+    //保存密码模式
    if(req.body.savecheck == 'true' ){
       user.login(option,function(err,result){
           if(err){
@@ -61,17 +61,20 @@ exports.postLogin = function(req,res,next){
       //获取cookie
       try{
       user.synLogin(option,function(err,result){
+
           if(err){
             console.log(err);
             return res.json({valid:false,err:err});
           }
-          else{     
+          else{
+
             req.session.user = {
               username:result.username,
               password:result.password,
-              jar:result.jar,
+               jar:result.jar,
               savecheck:req.body.savecheck
             };
+
             return res.json({valid:true});
           }
       });
@@ -80,4 +83,11 @@ exports.postLogin = function(req,res,next){
         console.log(e);
       }
    }
+}
+
+
+
+exports.logout = function(req,res,next){
+  req.session.user = null;
+  res.render('logout');
 }
