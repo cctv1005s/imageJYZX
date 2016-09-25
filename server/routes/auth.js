@@ -49,8 +49,10 @@ exports.postLogin = function(req,res,next){
           else{            
             req.session.user = {
               username:result.username,
+              password:result.password,
               cookie:result.cookie,
-              savecheck:req.body.savecheck
+              savecheck:req.body.savecheck,
+              logindate:new Date().getTime()
             };
             //这里还得在讨论
             return res.json({valid:true});
@@ -71,8 +73,9 @@ exports.postLogin = function(req,res,next){
             req.session.user = {
               username:result.username,
               password:result.password,
-               jar:result.jar,
-              savecheck:req.body.savecheck
+              jar:result.jar,
+              savecheck:req.body.savecheck,
+              logindate:new Date().getTime()
             };
 
             return res.json({valid:true});
@@ -84,7 +87,6 @@ exports.postLogin = function(req,res,next){
       }
    }
 }
-
 
 
 exports.logout = function(req,res,next){

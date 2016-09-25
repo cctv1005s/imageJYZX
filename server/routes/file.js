@@ -38,7 +38,7 @@ exports.resource = function(req,res,next){
         if(typeof resourceUrl == 'string'){
             res.writeHead(200, {
               'Content-Type': 'application/force-download',
-              'Content-Disposition': "attachment; filename="+encodeURIComponent(filename)//这里要再一次编码，比较坑爹
+              'Content-Disposition': "attachment; filename="+filename//这里要再一次编码，比较坑爹
             });
             request(resourceUrl).pipe(res);
         }

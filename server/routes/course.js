@@ -10,6 +10,8 @@ exports.getCourse = function(req,res,next){
         username = req.session.user.username,
         password = req.session.user.password;
 
+    
+
     if(savecheck == 'true'){
         course.courseList(username,function(err,result){
            if(err){
@@ -32,19 +34,6 @@ exports.getCourse = function(req,res,next){
                 console.log(err);
                 if(err == "页面访问出错"){
                     //在访问一遍
-                    user.synLogin({username:username,password:password},jar,function(err,result){
-                        if(err){
-                            return res.json({
-                                valid:false,
-                                error:err
-                                }); 
-                        }
-                        res.json({
-                        valid:true,
-                        courselist:result
-                        }
-                        );
-                    });
                 }
                 return res.json({
                         valid:false,
