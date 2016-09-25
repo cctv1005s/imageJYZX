@@ -17,6 +17,8 @@
 
 </head>
 <body>
+
+<!-- 模态框模块 -->
 <div class="mymodal" style="position:fixed;">
     <div class="mymodal-main">
         <div class="mymodal-title"><span>标题</span></div>
@@ -28,6 +30,7 @@
     </div>
 </div>
 
+<!-- 导航栏模块 -->
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
@@ -40,7 +43,7 @@
          </button>
          <a href="/">
              <img class="logo" src="./img/logo.jpg">
-             <span class="logotitle">教育在线-镜像站</span>
+             <span class="logotitle">南开大学教育在线-</span>
          </a>
 
         </div>
@@ -61,23 +64,24 @@
     <span class="glyphicon glyphicon-plus"></span>
 </div>
 
-
-    <script type="text/javascript" src="js/jquery-2.2.0.min.js"></script>
-    <script type="text/javascript" src="js/bootstrap.min.js"></script>
-
-    <!--sweetalert-->
-    <link rel="stylesheet" type="text/css" href="css/sweetalert.css">
-    <script type="text/javascript" src='js/sweetalert-dev.js'></script>
-    
     <!-- react -->
-    <script src="js/react.min.js"></script>
-    <script src="js/react-dom.min.js"></script>
-    <script src="js/browser.min.js"></script>
+<script src="http://static.runoob.com/assets/react/react-0.14.7/build/react.min.js"></script>
+<script src="http://static.runoob.com/assets/react/react-0.14.7/build/react-dom.min.js"></script>
+<script src="http://static.runoob.com/assets/react/browser.min.js"></script>
 
-    <!-- mymodal -->
-    <script type="text/javascript" src="js/mymodal.js"></script>
+<script type="text/javascript" src="js/jquery-2.2.0.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/babel" src="/js/index.js"></script>
+
+<!--sweetalert-->
+<link rel="stylesheet" type="text/css" href="css/sweetalert.css">
+<script type="text/javascript" src='js/sweetalert-dev.js'></script>
+
+<!-- mymodal -->
+<script type="text/javascript" src="js/mymodal.js"></script>
 
 <script type="text/javascript">
+//初始化代码
   ;
   mymodal();
   setInterval(function(){
@@ -109,12 +113,11 @@
 
 </script>
 <script type="text/javascript">
-
+    ;
     $('.btn-showcourse').click(function(event) {
         $('.course').toggleClass('course-hidden');
         $('.btn-showcourse').toggleClass('showcourse-rotate');
     });
-
 </script>
 
 </body>

@@ -75,7 +75,6 @@ a{padding: 0 !important;}
 .login-help{color: grey;cursor: pointer;}
 
 /*index界面*/
-
 .course{;margin-left: 15px;padding: 0 !important;transition: 0.3s;}
 .course{min-height: 400px;}
 .course-title{height: 60px;line-height: 60px;font-size: 1.3em;border-bottom: 2px #eee solid;text-indent: 1em;margin-bottom: 1em;}

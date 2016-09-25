@@ -355,7 +355,6 @@ var Task = React.createClass({
     if(this.state.loading == true){
        view =(<p><i className="fa fa-spinner fa-spin"></i>加载中，请稍候</p>); 
     }
-
     for(var i = 0;i < taskList.length;i++){
         view.push(
 <div className="homework-item">
@@ -642,14 +641,14 @@ var LoginBox = React.createClass({
         </a>
         <div className="savecheckbox poscenter">
            <input type="checkbox" name="savepassword" id="savepassword " checked={this.state.savecheck} onClick={this.checkChange} disabled = "disabled">
-           <span disabled = "disabled">高阶版</span></input>
+           </input><span>高阶版</span>
            <span className="glyphicon glyphicon-question-sign login-help" data-toggle="tooltip" data-placement="bottom" title="复刻版的介绍在关于里面，还没写完，复刻版会更完善，敬请期待" ></span>
-        </div>        
+                   <a className="right" href="http://www.nkutic.com.cn/blog?action=show&articleid=4">使用指南</a>
+    </div>        
     </div>
 </div>;
     }
 });
-
 
 var CourseList = React.createClass({
     getInitialState:function(){
