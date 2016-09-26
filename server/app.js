@@ -90,7 +90,7 @@ app.use(function(err, req, res, next) {
   });
 }); 
 
-var port = 80;
+var port = 3030;
 app.listen(port||3000);
 console.log('app lisent on '+port||3000);
 
